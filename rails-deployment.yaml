@@ -1,0 +1,39 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: rails
+  labels:
+    app: hello-docker-rails
+spec:
+  selector:
+    matchLabels:
+      app: hello-docker-rails
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: hello-docker-rails
+        tier: backend
+    spec:
+      containers:
+      - image: benjamincaldwell/hello-docker-rails:latest
+        name: rails
+        env:
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: app-secrets
+                key: MYSQL_USER
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: app-secrets
+                key: MYSQL_PASSWORD
+          - name: MYSQL_HOST
+            valueFrom:
+              secretKeyRef:
+                name: app-secrets
+                key: MYSQL_HOST
+        ports:
+        - containerPort: 3000
+          name: rails

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rails-mysql
+  labels:
+    app: hello-docker-rails
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: hello-docker-rails
+    tier: mysql
+  clusterIP: None
